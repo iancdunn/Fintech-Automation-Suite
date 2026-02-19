@@ -41,3 +41,29 @@ Ensures the budget distribution logic remains precise:
 Comprehensive security flow testing:
 * Successful login and session persistence.
 * Error handling for incorrect passwords and existing usernames.
+
+---
+
+## Configuration & Parallelism
+
+The suite is optimized for high-performance hardware, utilizing the logical processors of modern CPUs (like the **Ryzen 5 5600X** or **Intel i3-1215U**).
+
+* **Parallel Workers**: Configured to run 4 simultaneous workers by default to match the test account pool.
+* **Automatic Server Orchestration**: The `playwright.config.ts` manages the Flask development server lifecycle automatically via the `webServer` hook.
+
+---
+
+## Project Structure
+
+```text
+├── fixtures/
+│   └── pom-fixtures.ts   # Centralized Multi-Tenant & Auth Logic
+├── pages/                # Page Object Models
+│   ├── BasePage.ts       # Shared navigation logic
+│   ├── HomePage.ts       # Dashboard & Transaction elements
+│   └── LoginPage.ts      # Auth selectors & methods
+├── tests/                # Functional Test Suites
+│   ├── tx.test.ts        # Transactional logic tests
+│   ├── allocation.test.ts # Budgeting & percent logic
+│   └── balances.test.ts   # Direct balance update tests
+└── playwright.config.ts  # Global Settings & Parallelization

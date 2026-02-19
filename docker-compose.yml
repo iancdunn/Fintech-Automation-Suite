@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: python3 Visionsofme/app.py
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=development
+
+  tests:
+    build: .
+    working_dir: /app/Automation_Suite
+    depends_on:
+      - web
+    environment:
+      - BASE_URL=http://web:5000
+    volumes:
+      - ./Automation_Suite/test-results:/app/Automation_Suite/test-results

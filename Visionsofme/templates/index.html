@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="grid grid-cols 1 md:grid-cols-3 gap-8">
+    <div class="md:col-span-1 space-y-6">
+        <div class="bg-white p-6 rounded-lg border border-gray-100">
+            <h4 class="text-xl font-bold mb-4 border-b pb-2">Current Balances</h4>
+            <div class="space-y-3">
+                <p class="flex justify-between items-center">
+                    <span class="font-semibold">Needs:</span>
+                    <span id="needs-bal">${{"%.2f" | format(current_user.needs_bal)}}</span>
+                    <span id="needs-pct">({{current_user.needs_pct}}%)</span>
+                </p>
+                <p class="flex justify-between items-center">
+                    <span class="font-semibold">Savings:</span>
+                    <span id="savings-bal">${{"%.2f" | format(current_user.savings_bal)}}</span>
+                    <span id="savings-pct">({{current_user.savings_pct}}%)</span>
+                </p>
+                <p class="flex justify-between items-center">
+                    <span class="font-semibold">Wants:</span>
+                    <span id="wants-bal">${{"%.2f" | format(current_user.wants_bal)}}</span>
+                    <span id="wants-pct">({{current_user.wants_pct}}%)</span>
+                </p>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg border border-gray-100">
+            <h4 class="text-xl font-bold mb-4 border-b pb-2">Edit Settings</h4>
+            <form method="POST" action="{{url_for('update_settings')}}">
+                <h6 class="text-sm font-semibold mb-2">BALANCES ($)</h6>
+                <div class="space-y-2 mb-4">
+                    <div class="flex rounded-md">
+                        <div>
+                            <div>
+                                <span class="inline-flex items-center px-3 rounded-l-md border border-gray-300 bg-gray-50 text-sm">
+                                    Needs</span>
+                                <input type="number" aria-label="Needs Bal" step="0.01" name="needs_bal" 
+                                value="{{current_user.needs_bal}}" 
+                                class="flex-1 block w-full border border-gray-300 p-3 rounded">
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <span class="inline-flex items-center px-3 rounded-l-md border border-gray-300 bg-gray-50 text-sm">
+                                    Savings</span>
+                                <input type="number" aria-label="Savings Bal" step="0.01" name="savings_bal" 
+                                value="{{current_user.savings_bal}}"
+                                class="flex-1 block w-full border border-gray-300 p-3 rounded">
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <span class="inline-flex items-center px-3 rounded-l-md border border-gray-300 bg-gray-50 text-sm">
+                                    Wants</span>
+                                <input type="number" aria-label="Wants Bal" step="0.01" name="wants_bal" 
+                                value="{{current_user.wants_bal}}"
+                                class="flex-1 block w-full border border-gray-300 p-3 rounded">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h6 class="text-sm font-semibold mb-2">ALLOCATIONS (%)</h6>
+                <div class="space-y-2 mb-4">
+                    <div class="flex rounded-md">
+                        <div>
+                            <div>
+                                <span class="inline-flex items-center px-3 rounded-l-md border border-gray-300 bg-gray-50 text-sm">
+                                    Needs</span>
+                                <input type="number" aria-label="Needs Pct" step="0.01" name="needs_pct" 
+                                value="{{current_user.needs_pct}}"
+                                class="flex-1 block w-full border border-gray-300 p-3 rounded">
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <span class="inline-flex items-center px-3 rounded-l-md border border-gray-300 bg-gray-50 text-sm">
+                                    Savings</span>
+                                <input type="number" aria-label="Savings Pct" step="0.01" name="savings_pct" 
+                                value="{{current_user.savings_pct}}"
+                                class="flex-1 block w-full border border-gray-300 p-3 rounded">
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <span class="inline-flex items-center px-3 rounded-l-md border border-gray-300 bg-gray-50 text-sm">
+                                    Wants</span>
+                                <input type="number" aria-label="Wants Pct" step="0.01" name="wants_pct" value="{{current_user.wants_pct}}"
+                                class="flex-1 block w-full border border-gray-300 p-3 rounded">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="w-full bg-green-600 text-white font-bold p-4">Update Settings</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="md:col-span-2 space-y-6">
+        <div class="bg-white p-6 rounded-lg border border-gray-100">
+            <h4 class="text-xl font-bold mb-4 border-b pb-2">Add Transaction</h4>
+            <form method="POST" action="{{url_for('add_transaction')}}" class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
+                <div class="md:col-span-3">
+                    <label for="type" class="block text-xs font-semibold uppercase mb-1">Type</label>
+                    <select name="type" id="type" 
+                    class="block w-full border border-gray-300 rounded p-3 bg-white" required>
+                        <option value="Deposit">Deposit</option>
+                        <option value="Withdrawal">Withdrawal</option>
+                    </select>
+                </div>
+                <div class="md:col-span-3">
+                    <label for="category" class="block text-xs font-semibold uppercase mb-1">Category</label>
+                    <select name="category" id="category" class="block w-full border border-gray-300 rounded p-3 bg-white">
+                        <option value="Needs">Needs</option>
+                        <option value="Savings">Savings</option>
+                        <option value="Wants">Wants</option>
+                    </select>
+                </div>
+                <div class="md:col-span-4">
+                    <label for="amount" class="block text-xs font-semibold uppercase mb-1">Amount</label>
+                    <input type="number" id="amount" step="0.01" name="amount" 
+                    class="flex-1 block w-full border border-gray-300 p-3 rounded">
+                </div>
+                <div class="md:col-span-2">
+                    <button type="submit" class="w-full bg-green-600 text-white font-bold p-4 rounded">Add</button>
+                </div>
+            </form>
+
+            <p class="text-xs mt-3">Deposits auto-split by your percentages. Withdrawals deduct from the selected category.</p>
+        </div>
+
+        <h4 class="text-xl font-bold mb-2 mt-8">Recent Transactions</h4>
+        <div class="bg-white rounded-lg border border-gray 200">
+            <ul class="divide-y divide-gray-200">
+                {% for tx in transactions %}
+                <li class="p-4 flex justify-between items-center">
+                    <div class="flex items-center space-x-3">
+                        <span class="font-semibold {% if tx.type == 'Deposit' %} text-green-600 {% else %} text-black {% endif %}">
+                            {{tx.type}}
+                        </span>
+                        <span class="font-medium">${{"%.2f" | format(tx.amount)}}</span>
+                        <span class="p-2 text-xs font-semibold rounded-full bg-blue-100">{{tx.category}}</span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <span class="text-sm">{{tx.date.strftime('%Y-%m-%d')}}</span>
+                        <a href="{{url_for('delete_transaction', id=tx.id)}}" class="text-red-500 text-sm font-semibold border border-red-200 p-3 rounded">
+                            Delete
+                        </a>
+                    </div>
+                </li>
+                {% else %}
+                <li class="p-4 text-center">No transactions yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

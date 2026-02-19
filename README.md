@@ -46,7 +46,7 @@ Comprehensive security flow testing:
 
 ## Configuration & Parallelism
 
-The suite is optimized for high-performance hardware, utilizing the logical processors of modern CPUs (like the **Ryzen 5 5600X** or **Intel i3-1215U**).
+The suite is optimized for high-performance hardware, utilizing the logical processors of modern CPUs.
 
 * **Parallel Workers**: Configured to run 4 simultaneous workers by default to match the test account pool.
 * **Automatic Server Orchestration**: The `playwright.config.ts` manages the Flask development server lifecycle automatically via the `webServer` hook.
@@ -56,14 +56,31 @@ The suite is optimized for high-performance hardware, utilizing the logical proc
 ## Project Structure
 
 ```text
-├── fixtures/
-│   └── pom-fixtures.ts   # Centralized Multi-Tenant & Auth Logic
-├── pages/                # Page Object Models
-│   ├── BasePage.ts       # Shared navigation logic
-│   ├── HomePage.ts       # Dashboard & Transaction elements
-│   └── LoginPage.ts      # Auth selectors & methods
-├── tests/                # Functional Test Suites
-│   ├── tx.test.ts        # Transactional logic tests
-│   ├── allocation.test.ts # Budgeting & percent logic
-│   └── balances.test.ts   # Direct balance update tests
-└── playwright.config.ts  # Global Settings & Parallelization
+Fintech_Automation_Suite/
+├── Automation_Suite/            # Playwright Testing Framework
+│   ├── fixtures/
+│   │   └── pom-fixtures.ts      # Multi-tenant worker logic & custom fixtures
+│   ├── pages/                   # Page Object Models (POM)
+│   │   ├── BasePage.ts          # Parent class for shared navigation
+│   │   ├── HomePage.ts          # Dashboard, transactions, and settings logic
+│   │   ├── LoginPage.ts         # Authentication selectors and methods
+│   │   └── SignupPage.ts        # User registration interaction
+│   ├── tests/                   # End-to-End Test Suites
+│   │   ├── allocation.test.ts   # Budget distribution & percent logic
+│   │   ├── auth.test.ts         # Login/Signup security flows
+│   │   ├── balances.test.ts     # Direct balance update validation
+│   │   ├── delete-tx.test.ts    # Transaction removal and state cleanup
+│   │   └── tx.test.ts           # Core deposit and withdrawal engine
+│   ├── playwright.config.ts     # Global test runner & webServer configuration
+│   └── .dockerignore            # Build optimization to exclude local artifacts
+│
+├── Visionsofme/                 # Flask Backend (System Under Test)
+│   ├── templates/               # Jinja2 HTML files (Source of UI locators)
+│   ├── app.py                   # Main Flask server & database reset API
+│   └── ...                      # SQLite database and backend logic
+│
+├── Dockerfile                   # Blueprint for containerized environment
+├── docker-compose.yml           # Service orchestration for Backend & Tests
+├── package.json                 # Node.js dependencies (Playwright, TS)
+├── package-lock.json            # Deterministic dependency lock file
+└── requirements.txt             # Python dependencies (Flask, SQLAlchemy)

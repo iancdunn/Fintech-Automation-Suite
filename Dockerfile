@@ -5,9 +5,10 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y python3 python3-pip
 
 COPY package*.json ./
-COPY requirements.txt ./
+RUN npm install
 
-RUN npm install && pip3 install -r requirements.txt
+COPY requirements.txt ./
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 COPY . .
 

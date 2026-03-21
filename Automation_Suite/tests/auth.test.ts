@@ -2,14 +2,14 @@ import {expect, test} from '../fixtures/pom-fixtures';
 
 test('User can successfully login', async({page, loginPage})=>{
     await loginPage.goto();
-    await loginPage.login('Demo', 'password123');
+    await loginPage.login('demo1', 'password123');
     
     await expect(page).toHaveURL('/');
 });
 
 test('User cannot login with an incorrect password', async({page, loginPage})=>{
     await loginPage.goto();
-    await loginPage.login('Demo', 'Password123');
+    await loginPage.login('demo1', 'Password123');
 
     await expect(page.getByText('Invalid username or password.')).toBeVisible();
     await expect(page).toHaveURL('login');

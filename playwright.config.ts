@@ -9,7 +9,7 @@ export default defineConfig({
     baseURL: 'http://127.0.0.1:5000',
     trace: 'on-first-retry',
   },
-  workers: 4,
+  workers: 2,
   projects:[
     {
       name: 'auth-tests',

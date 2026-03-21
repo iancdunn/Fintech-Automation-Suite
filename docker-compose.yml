@@ -2,16 +2,18 @@ version: '3.8'
 
 services:
   web:
-    build: .
-    command: python3 Visionsofme/app.py
+    build:
+      context: .
+      dockerfile: Dockerfile.web
     ports:
       - "5000:5000"
     environment:
       - FLASK_ENV=development
 
   tests:
-    build: .
-    working_dir: /app/Automation_Suite
+    build: 
+      context: .
+      dockerfile: Dockerfile
     depends_on:
       - web
     environment:

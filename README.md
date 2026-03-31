@@ -1,8 +1,10 @@
-# Fintech Automation Suite
+# Finance Automation Suite
 
 This repository contains a professional-grade, high-concurrency end-to-end automation suite for the **Visionsofme** financial application. Built with **Playwright** and **TypeScript**, the suite is engineered to handle complex state management, multi-user isolation, and rapid parallel execution.
 
 ---
+
+![Home UI](media/visionsofme_ui.jpg)
 
 ## Key Features
 
